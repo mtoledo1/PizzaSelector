@@ -18,16 +18,17 @@ public class CostCalculator extends AppCompatActivity {
         setContentView(R.layout.activity_cost_calculator);
 
         //constants of cost values
-        final double TOPPING_COST = 0.50;
+        final double TOPPING_COST = 0.75;
         final double INDIVIDUAL_COST = 8.99;
         final double SMALL_COST = 13.49;
         final double MEDIUM_COST = 20.99;
         final double LARGE_COST = 23.99;
         final double EXTRA_COST = 27.99;
         final double GARLIC_CRUST = 2.00;
-        final double THIN_CRUST = 0.00;
+        final double THIN_CRUST = 1.00;
         final double THICK_CRUST = 1.50;
         final double CHEESE_FILLED = 3.00;
+
 
         //receive information from previous activity by getting extras from Intent
         boolean[] toppingsOnPizza = getIntent().getBooleanArrayExtra("TOPPINGS_BOOLEANS");
@@ -48,7 +49,46 @@ public class CostCalculator extends AppCompatActivity {
         TextView txtvwCostBreakdown = (TextView) findViewById(R.id.txtvwCostBreakdown);
 
         //Insert your code here.
+        for(int i = 0; i < toppingsOnPizza.length; i++) {
+            if(toppingsOnPizza[i]){
+                numToppings = numToppings + 1;
+            }
+            toppingCost = numToppings * TOPPING_COST;
+        }
+        if(sizeName.equals("Individual")){
+            sizeCost = INDIVIDUAL_COST;
+        }else if(sizeName.equals("Small")){
+            sizeCost = SMALL_COST;
+        }else if(sizeName.equals("Medium")){
+            sizeCost = MEDIUM_COST;
+        }else if (sizeName.equals("Large")){
+            sizeCost = LARGE_COST;
+        }else{
+            sizeCost = EXTRA_COST;
+        }
 
+
+
+        if(crustSelection.equals("Thin")){
+            crustName = "Thin";
+            crustCost = THIN_CRUST;
+        }else if(crustSelection.equals("Thick")){
+            crustName = "Thick";
+            crustCost = THICK_CRUST;
+        }else{
+            crustName = "Cheesed-Filled";
+            crustCost = CHEESE_FILLED;
+        }
+
+        if(hasGarlicCrust) {
+            crustName = crustName + " w/ garlic";
+            crustCost = crustCost + GARLIC_CRUST;
+        }else{
+            crustName = crustName + " w/o garlic";
+        }
+        subtotal = toppingCost + sizeCost + crustCost;
+        taxes = subtotal * 0.12;
+        totalCost = subtotal + taxes;
         String costs = String.format("Toppings: %d x $0.75 = $%.2f\nSize: %s = $%.2f\n" +
                 "Crust Type: %s = $%.2f\nSubtotal: $%.2f\nTaxes: $%.2f\nTotal: $%.2f",
                 numToppings, toppingCost, sizeName, sizeCost, crustName, crustCost,

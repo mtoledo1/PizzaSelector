@@ -20,6 +20,12 @@ public class PizzaPreferences extends AppCompatActivity {
     private RadioButton rdobtnCheeseFilled;
     private CheckBox chkboxGarlic;
 
+    private String sizeName;
+    private String crust;
+    private boolean garlic;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +67,40 @@ public class PizzaPreferences extends AppCompatActivity {
         boolean[] hasToppings = new boolean[toppings.length];
 
         //insert your code here
+        for(int i = 0; i < toppings.length; i++){
+            if(toppings[i].isChecked()) {
+                hasToppings[i] = true;
+            }
+        }
+        if(rdobtnIndividual.isChecked()){
+            sizeName = "Individual";
+        }else if(rdobtnSmall.isChecked()){
+            sizeName = "Small";
+        }else if(rdobtnMedium.isChecked()){
+            sizeName = "Medium";
+        }else if(rdobtnLarge.isChecked()){
+            sizeName = "Large";
+        }else {
+            sizeName = "XLarge";
+        }
 
+        if(rdobtnThin.isChecked()){
+            crust = "Thin";
+        }else if(rdobtnThick.isChecked()){
+            crust = "Thick";
+        }else{
+            crust = "Cheese-Filled";
+        }
+
+        if(chkboxGarlic.isChecked()){
+            garlic = true;
+        }else{
+            garlic = false;
+        }
         calculatePizzaCost.putExtra("TOPPINGS_BOOLEANS", hasToppings);
+        calculatePizzaCost.putExtra("SIZE_SELECTION",sizeName);
+        calculatePizzaCost.putExtra("CRUST_SELECTION",crust);
+        calculatePizzaCost.putExtra("HAS_GARLIC_CRUST", garlic);
         startActivityForResult(calculatePizzaCost, 0);
     }
 
@@ -76,9 +114,6 @@ public class PizzaPreferences extends AppCompatActivity {
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
 
-        for(int i = 0; i < toppings.length; i++){
-            toppings[i].setChecked(false);
-        }
         rdobtnIndividual.setChecked(false);
         rdobtnSmall.setChecked(false);
         rdobtnMedium.setChecked(false);
